@@ -1,0 +1,1 @@
+variable "BUCKET_NAME" {}
