@@ -6,3 +6,5 @@ variable "region" {
 variable "s3_name" {
   type = string
 }
+
+variable "s3_domain_name" {}

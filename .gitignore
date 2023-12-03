@@ -66,3 +66,4 @@ terraform/terraform.rc
 
 # Github runner
 actions-runner
+.vscode
