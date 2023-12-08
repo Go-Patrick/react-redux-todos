@@ -1,6 +1,6 @@
 locals {
   s3_origin_id   = "${var.s3_name}-origin"
-  s3_domain_name = "${var.s3_domain_name}"
+  s3_domain_name = var.s3_domain_name
 }
 
 resource "aws_cloudfront_distribution" "s3_distribution" {

@@ -5,6 +5,10 @@ variable "region" {
 
 variable "s3_name" {
   type = string
+  description = "S3 bucket name"
 }
 
-variable "s3_domain_name" {}
+variable "s3_domain_name" {
+  type = string
+  description = "S3 domain name"
+}

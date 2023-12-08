@@ -1,23 +1,23 @@
-resource "aws_s3_bucket" "bucket" {
+resource "aws_s3_bucket" "app_bucket" {
   bucket = var.s3_name
 }
 
-resource "aws_s3_bucket_acl" "s3_bucket_acl" {
-  bucket = aws_s3_bucket.bucket.id
+resource "aws_s3_bucket_acl" "app_bucket_acl" {
+  bucket = aws_s3_bucket.app_bucket.id
   acl = "public-read"
-  depends_on = [aws_s3_bucket_ownership_controls.s3_bucket_acl_ownership]
+  depends_on = [aws_s3_bucket_ownership_controls.app_bucket_acl_ownership]
 }
 
-resource "aws_s3_bucket_ownership_controls" "s3_bucket_acl_ownership" {
-  bucket = aws_s3_bucket.bucket.id
+resource "aws_s3_bucket_ownership_controls" "app_bucket_acl_ownership" {
+  bucket = aws_s3_bucket.app_bucket.id
   rule {
     object_ownership = "BucketOwnerPreferred"
   }
-  depends_on = [aws_s3_bucket_public_access_block.demo]
+  depends_on = [aws_s3_bucket_public_access_block.app_public_access_lock_config]
 }
 
-resource "aws_s3_bucket_public_access_block" "demo" {
-  bucket = aws_s3_bucket.bucket.id
+resource "aws_s3_bucket_public_access_block" "app_public_access_lock_config" {
+  bucket = aws_s3_bucket.app_bucket.id
 
   block_public_acls       = false
   block_public_policy     = false
@@ -25,8 +25,8 @@ resource "aws_s3_bucket_public_access_block" "demo" {
   restrict_public_buckets = false
 }
 
-resource "aws_s3_bucket_website_configuration" "bucket_web" {
-  bucket = aws_s3_bucket.bucket.id
+resource "aws_s3_bucket_website_configuration" "app_web_bucket_config" {
+  bucket = aws_s3_bucket.app_bucket.id
 
   index_document {
     suffix = "index.html"
@@ -38,7 +38,7 @@ resource "aws_s3_bucket_website_configuration" "bucket_web" {
 }
 
 resource "aws_s3_bucket_policy" "bucket_policy" {
-  bucket = aws_s3_bucket.bucket.id
+  bucket = aws_s3_bucket.app_bucket.id
 
   policy = jsonencode({
     Version: "2012-10-17",
@@ -58,5 +58,5 @@ resource "aws_s3_bucket_policy" "bucket_policy" {
     ]
   })
 
-  depends_on = [aws_s3_bucket_public_access_block.demo]
+  depends_on = [aws_s3_bucket_public_access_block.app_public_access_lock_config]
 }
